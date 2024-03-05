@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const DashboardPage = () => {
+const SearchPage = () => {
     const navigate = useNavigate();
 
     const handleLogout = async () => {
@@ -19,11 +19,11 @@ const DashboardPage = () => {
 
     return (
         <div>
-            <h1>Dashboard</h1>
-            <p>Welcome to the dashboard!</p>
+            <h1>SearchPage</h1>
+            <p>Welcome to the SearchPage!</p>
             <button onClick={handleLogout}>Logout</button>
         </div>
     );
 };
 
-export default DashboardPage;
+export default SearchPage;

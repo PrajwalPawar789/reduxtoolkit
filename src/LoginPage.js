@@ -11,7 +11,7 @@ const LoginPage = () => {
         try {
             const response = await axios.post('http://localhost:5000/login', { username, password }, { withCredentials: true });
             if (response.data.success) {
-                Navigate('/dashboard');
+                Navigate('/search');
             }
         } catch (error) {
             console.error('Login failed:', error);
