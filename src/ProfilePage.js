@@ -1,70 +1,90 @@
 import React, { useState } from 'react';
 import Navbar from './Navbar';
 
+const ProfileSection = ({ title, children }) => (
+  <div className="mb-6">
+    <h2 className="text-lg font-semibold mb-2">{title}</h2>
+    {children}
+  </div>
+);
+
+const ProfileDetail = ({ label, value }) => (
+  <p className="mb-1"><strong>{label}:</strong> {value}</p>
+);
 
 const ProfilePage = () => {
-    const [activeView, setActiveView] = useState(null);
+    const [activeSection, setActiveSection] = useState('profile');
 
     const userData = {
         full_name: "Prajwal Pawar",
-        email: "prajwal@techonesolutionslab.com"
+        email: "prajwal@techonesolutionslab.com",
+        join_date: "January 5th, 2022",
+        credits: 100,
+        credits_used: 20
     };
 
     const paymentData = {
         invoices: [],
         subscription: {
-            plan: "Free Monthly",
-            credits_per_month: 5,
-            users: 1,
+            plan: "Enterprise Annual",
+            credits_per_month: 500,
+            users: 5,
             renewal_date: "Mar 28th, 2024"
         }
     };
 
-    const handleViewSwitch = (view) => {
-        setActiveView(view);
-    };
+    const setActive = (section) => setActiveSection(section);
+
+    const navItemClass = (section) => 
+        `cursor-pointer px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200 ${activeSection === section ? 'bg-blue-600 text-white' : 'text-gray-700 hover:bg-blue-100'}`;
 
     return (
         <>
             <Navbar />
-            <div className="container mx-auto px-4 py-8 ">
+            <div className="container mx-auto px-4 py-8">
                 <div className="bg-white shadow rounded-lg overflow-hidden">
-                    <div className="p-10">
-                    <h1 className="text-3xl font-semibold text-center mb-8">Account Details</h1>
-                        <ul className="list-none flex justify-between mb-8">
-                            <li className="cursor-pointer" onClick={() => handleViewSwitch('profile')}>My Profile</li>
-                            <li className="cursor-pointer" onClick={() => handleViewSwitch('payment')}>Payments & Subscription</li>
-                            <li>Account settings</li>
-                            <li>Tags management</li>
-                            <li>Intent</li>
-                            <li>Privacy</li>
-                        </ul>
-                        {activeView === 'profile' && (
-                            <div>
-                                <h2 className="text-xl font-semibold mb-4">My Profile</h2>
-                                <p><strong>Full name:</strong> {userData.full_name}</p>
-                                <p><strong>Email:</strong> {userData.email}</p>
-                                <p><strong>Joined since:</strong> {userData.email}</p>
-                                <p><strong>Credits:</strong> {userData.email}</p>
-                                <p><strong>Credits Used:</strong> {userData.email}</p>
+                    <div className="px-10 py-6">
+                        <h1 className="text-2xl font-semibold text-center mb-6">Profile & Settings</h1>
+                        <div className="flex justify-center space-x-4 mb-6">
+                            <div className={navItemClass('profile')} onClick={() => setActive('profile')}>Profile</div>
+                            <div className={navItemClass('payment')} onClick={() => setActive('payment')}>Subscription</div>
+                            <div className={navItemClass('settings')} onClick={() => setActive('settings')}>Settings</div>
+                        </div>
+                        
+                        {activeSection === 'profile' && (
+                            <>
+                                <ProfileSection title="Personal Information">
+                                    <ProfileDetail label="Full Name" value={userData.full_name} />
+                                    <ProfileDetail label="Email" value={userData.email} />
+                                    <ProfileDetail label="Joined Since" value={userData.join_date} />
+                                </ProfileSection>
 
-                                <p><a href="#">Want to reset your password? Send me reset instructions</a></p>
-                            </div>
+                                <ProfileSection title="Usage">
+                                    <ProfileDetail label="Credits" value={`${userData.credits} available`} />
+                                    <ProfileDetail label="Credits Used" value={userData.credits_used} />
+                                </ProfileSection>
+
+                                <a href="#" className="text-blue-500 hover:underline">Reset Password</a>
+                            </>
                         )}
-                        {activeView === 'payment' && (
+
+                        {activeSection === 'payment' && (
+                            <>
+                                <ProfileSection title="Subscription Details">
+                                    <ProfileDetail label="Plan" value={paymentData.subscription.plan} />
+                                    <ProfileDetail label="Credits per Month" value={paymentData.subscription.credits_per_month} />
+                                    <ProfileDetail label="Users" value={paymentData.subscription.users} />
+                                    <ProfileDetail label="Renewal Date" value={paymentData.subscription.renewal_date} />
+                                </ProfileSection>
+                                <ProfileSection title="Invoice History">
+                                    <p>No Invoices Available</p>
+                                </ProfileSection>
+                            </>
+                        )}
+
+                        {activeSection === 'settings' && (
                             <div>
-                                <h2 className="text-xl font-semibold mb-4">Payments & Subscription</h2>
-                                <div>
-                                    <h3 className="text-lg font-semibold mb-2">Invoice History</h3>
-                                    <p>No Invoices</p>
-                                </div>
-                                <div>
-                                    <h3 className="text-lg font-semibold mb-2">Subscription</h3>
-                                    <p><strong>Plan:</strong> {paymentData.subscription.plan}</p>
-                                    <p><strong>Credits per Month:</strong> {paymentData.subscription.credits_per_month}</p>
-                                    <p><strong>Users:</strong> {paymentData.subscription.users}</p>
-                                    <p>Your credits will be renewed on {paymentData.subscription.renewal_date}</p>
-                                </div>
+                                <p>Settings section content goes here...</p>
                             </div>
                         )}
                     </div>
